@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Duck Bet</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',Arial,sans-serif;
+}
+
+
+body{
+
+background:
+linear-gradient(
+    rgba(0,0,0,0.65),
+    rgba(0,0,0,0.65)
+),
+url("image/duck.png");
+
+background-size:cover;
+
+background-position:center;
+
+background-repeat:no-repeat;
+
+background-attachment:fixed;
+
+
+color:white;
+
+padding:30px;
+
+min-height:100vh;
+
+}
+
+.container{
+
+    max-width:1200px;
+
+    margin:auto;
+
+}
+
+
+
+h1{
+
+    text-align:center;
+
+    font-size:42px;
+
+    margin-bottom:25px;
+
+    text-shadow:
+    0 0 15px #2196f3;
+
+}
+
+
+
+/* =================
+ NAVBAR
+================= */
+
+
+nav{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:15px;
+
+    margin-bottom:30px;
+
+}
+
+
+
+nav a{
+
+    color:white;
+
+    text-decoration:none;
+
+    background:
+    rgba(255,255,255,0.08);
+
+    border:1px solid rgba(255,255,255,.2);
+
+    padding:12px 25px;
+
+    border-radius:12px;
+
+    transition:.3s;
+
+    backdrop-filter:blur(10px);
+
+}
+
+
+
+nav a:hover{
+
+    background:#2196f3;
+
+    transform:translateY(-3px);
+
+    box-shadow:
+    0 8px 20px rgba(33,150,243,.5);
+
+}
+
+
+
+/* =================
+ CARD
+================= */
+
+
+.card{
+
+    background:
+    rgba(45,45,45,.75);
+
+    border:
+
+    1px solid rgba(255,255,255,.1);
+
+    border-radius:18px;
+
+    padding:25px;
+
+    margin-bottom:25px;
+
+
+    box-shadow:
+
+    0 10px 30px rgba(0,0,0,.4);
+
+
+    backdrop-filter:blur(15px);
+
+
+}
+
+
+
+.card h2{
+
+    margin-bottom:20px;
+
+    color:#90caf9;
+
+}
+
+
+
+/* =================
+ INPUT SELECT
+================= */
+
+
+input,
+select{
+
+
+    background:#171717;
+
+    color:white;
+
+    border:
+
+    1px solid #555;
+
+
+    padding:12px 15px;
+
+    font-size:15px;
+
+
+    border-radius:12px;
+
+
+    outline:none;
+
+
+    transition:.3s;
+
+
+}
+
+
+
+input:focus,
+select:focus{
+
+
+    border-color:#2196f3;
+
+
+    box-shadow:
+
+    0 0 10px rgba(33,150,243,.5);
+
+
+}
+
+
+
+
+/* =================
+ BUTTON
+================= */
+
+
+button{
+
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #2196f3,
+        #1565c0
+    );
+
+
+    color:white;
+
+
+    border:none;
+
+
+    padding:
+
+    12px 25px;
+
+
+    border-radius:12px;
+
+
+    font-size:15px;
+
+
+    font-weight:bold;
+
+
+    cursor:pointer;
+
+
+    transition:.25s;
+
+
+    box-shadow:
+
+    0 5px 15px rgba(33,150,243,.35);
+
+
+}
+
+
+
+button:hover{
+
+
+    transform:
+
+    translateY(-3px);
+
+
+    box-shadow:
+
+    0 10px 25px rgba(33,150,243,.6);
+
+
+}
+
+
+
+button:active{
+
+
+    transform:
+
+    scale(.95);
+
+
+}
+
+
+
+/* ปุ่มลบ */
+
+button[onclick]{
+
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #ff5252,
+        #b71c1c
+    );
+
+}
+
+
+
+
+/* =================
+ ROW
+================= */
+
+
+.row{
+
+    display:flex;
+
+    gap:15px;
+
+    flex-wrap:wrap;
+
+    align-items:center;
+
+}
+
+
+
+/* =================
+ TABLE
+================= */
+
+
+table{
+
+
+    width:100%;
+
+
+    border-collapse:collapse;
+
+
+    overflow:hidden;
+
+
+    border-radius:12px;
+
+
+}
+
+
+
+th{
+
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #333,
+        #555
+    );
+
+
+    padding:14px;
+
+
+}
+
+
+
+td{
+
+
+    padding:14px;
+
+
+    border-bottom:
+
+    1px solid rgba(255,255,255,.1);
+
+
+}
+
+
+
+tbody tr{
+
+
+    transition:.2s;
+
+
+}
+
+
+
+tbody tr:hover{
+
+
+    background:
+
+    rgba(33,150,243,.15);
+
+
+}
+
+
+
+/* =================
+ RESULT
+================= */
+
+
+.resultSelect{
+
+    width:120px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>
+        
+        Duck Bet888
+    </h1>
+
+<nav>
+
+    <a href="index.html">
+        🦆 DuckBet
+    </a>
+    
+    <a href="history.html">
+    📜 History
+    </a>
+    
+    <a href="stat.html">
+    📊 Stat
+    </a>
+    
+    </nav>
+ 
+
+<!-- เพิ่มผู้เล่น -->
+
+<div class="card">
+
+<h2>Add Player</h2>
+
+<div class="row">
+
+<input id="playerName" placeholder="ชื่อผู้เล่น">
+
+<button id="addPlayerBtn">
+
+Add Player
+
+</button>
+
+</div>
+
+</div>
+
+<!-- แทงผู้ชนะ -->
+
+<div class="card">
+
+<h2>🏆 Bet Winner (500 Diamond)</h2>
+
+<div class="row">
+
+<select id="winPlayer"></select>
+
+<select id="winHorse">
+
+    <option value="ODIN">ODIN</option>
+    <option value="THOR">THOR</option>
+    <option value="ZEUS">ZEUS</option>
+    <option value="POSEIDON">POSEIDON</option>
+    
+    </select>
+
+<button id="addWinBet">
+
+Add
+
+</button>
+
+</div>
+
+</div>
+
+<!-- แทงหัวท้าย -->
+
+<div class="card">
+
+<h2>🥇 Bet Loser (500 Diamond)</h2>
+
+<div class="row">
+
+<select id="lastPlayer"></select>
+
+
+<select id="tailHorse">
+
+<option>ODIN</option>
+<option>THOR</option>
+<option>ZEUS</option>
+<option>POSEIDON</option>
+
+</select>
+
+<button id="addLastBet">
+
+Add
+
+</button>
+
+</div>
+
+</div>
+
+<!-- แทงสเตป -->
+
+<div class="card">
+
+<h2>🎯 Bet Step (100 Diamond)</h2>
+
+<div class="row">
+
+<select id="stepPlayer"></select>
+
+Rank 1
+
+<select id="step1">
+
+<option>ODIN</option>
+<option>THOR</option>
+<option>ZEUS</option>
+<option>POSEIDON</option>
+
+</select>
+
+Rank 2
+
+<select id="step2">
+
+    <option>ODIN</option>
+    <option>THOR</option>
+    <option>ZEUS</option>
+    <option>POSEIDON</option>
+
+</select>
+
+Rank 3
+
+<select id="step3">
+
+    <option>ODIN</option>
+    <option>THOR</option>
+    <option>ZEUS</option>
+    <option>POSEIDON</option>
+
+</select>
+
+Rank 4
+
+<select id="step4">
+
+    <option>ODIN</option>
+    <option>THOR</option>
+    <option>ZEUS</option>
+    <option>POSEIDON</option>
+
+</select>
+
+<button id="addStep">
+
+Add
+
+</button>
+
+</div>
+
+</div>
+
+<!-- ตารางโพย -->
+
+<div class="card">
+
+<h2>📋 Lists</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+    <th>Player</th>
+    <th>Type</th>
+    <th>Record</th>
+    <th>Bet</th>
+    <th>Result</th>
+    <th>Manage</th>
+
+</tr>
+
+</thead>
+
+<tbody id="betTable">
+
+<tr>
+
+<td colspan="6">
+
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<!-- กรอกผล -->
+
+<div class="card">
+
+<h2>🏁 Match Results</h2>
+
+<div class="row">
+
+Rank 1
+
+<select class="resultSelect" id="result1">
+
+    <option>ODIN</option>
+    <option>THOR</option>
+    <option>ZEUS</option>
+    <option>POSEIDON</option>
+
+</select>
+
+Rank 2
+
+<select class="resultSelect" id="result2">
+
+    <option>ODIN</option>
+    <option>THOR</option>
+    <option>ZEUS</option>
+    <option>POSEIDON</option>
+
+</select>
+
+Rank 3
+
+<select class="resultSelect" id="result3">
+
+    <option>ODIN</option>
+    <option>THOR</option>
+    <option>ZEUS</option>
+    <option>POSEIDON</option>
+
+</select>
+
+Rank 4
+
+<select class="resultSelect" id="result4">
+
+    <option>ODIN</option>
+    <option>THOR</option>
+    <option>ZEUS</option>
+    <option>POSEIDON</option>
+
+</select>
+
+<button id="calculateBtn">
+
+Calculate
+
+</button>
+
+</div>
+
+</div>
+
+<!-- ตารางคะแนน -->
+
+<div class="card">
+
+<h2>💰 Result</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+    <th>Player</th>
+    <th>Bet</th>
+    <th>Get</th>
+
+</tr>
+
+</thead>
+
+<tbody id="summaryTable">
+
+<tr>
+
+    <td colspan="3">
+        </td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script type="module" src="app.js"></script>
+
+</body>
+</html>

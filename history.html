@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Horse Bet History</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',Arial,sans-serif;
+}
+
+
+body{
+
+background:
+linear-gradient(
+    rgba(0,0,0,0.65),
+    rgba(0,0,0,0.65)
+),
+url("image/duck.png");
+
+
+background-size:cover;
+
+background-position:center;
+
+background-repeat:no-repeat;
+
+background-attachment:fixed;
+
+
+color:white;
+
+padding:30px;
+
+min-height:100vh;
+
+}
+
+
+
+.container{
+
+    max-width:1200px;
+
+    margin:auto;
+
+}
+
+
+
+h1{
+
+    text-align:center;
+
+    font-size:42px;
+
+    margin-bottom:25px;
+
+    text-shadow:
+    0 0 15px #2196f3;
+
+}
+
+
+
+/* NAVBAR */
+
+nav{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:15px;
+
+    margin-bottom:30px;
+
+}
+
+
+
+nav a{
+
+    color:white;
+
+    text-decoration:none;
+
+    background:
+    rgba(255,255,255,0.08);
+
+    border:1px solid rgba(255,255,255,.2);
+
+    padding:12px 25px;
+
+    border-radius:12px;
+
+    transition:.3s;
+
+    backdrop-filter:blur(10px);
+
+}
+
+
+
+nav a:hover{
+
+    background:#2196f3;
+
+    transform:translateY(-3px);
+
+    box-shadow:
+    0 8px 20px rgba(33,150,243,.5);
+
+}
+
+
+
+/* CARD */
+
+.card{
+
+    background:
+    rgba(45,45,45,.75);
+
+    border:1px solid rgba(255,255,255,.1);
+
+    border-radius:18px;
+
+    padding:25px;
+
+    margin-bottom:25px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.4);
+
+    backdrop-filter:blur(15px);
+
+}
+
+
+
+.card h2{
+
+    margin-bottom:20px;
+
+    color:#90caf9;
+
+}
+
+
+
+/* TABLE */
+
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    overflow:hidden;
+
+    border-radius:12px;
+
+}
+
+
+
+th{
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #333,
+        #555
+    );
+
+    padding:14px;
+
+}
+
+
+
+td{
+
+    padding:14px;
+
+    text-align:center;
+
+    border-bottom:
+
+    1px solid rgba(255,255,255,.1);
+
+}
+
+
+
+tbody tr{
+
+    transition:.2s;
+
+}
+
+
+
+tbody tr:hover{
+
+    background:
+
+    rgba(33,150,243,.15);
+
+}
+
+
+
+.result{
+
+    color:#ffd740;
+
+    font-weight:bold;
+
+}
+
+
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+    body{
+
+        padding:15px;
+
+    }
+
+
+    h1{
+
+        font-size:32px;
+
+    }
+
+
+    nav{
+
+        flex-direction:column;
+
+    }
+
+
+    table{
+
+        font-size:14px;
+
+    }
+
+}
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<h1>
+    🦆 Competition History
+</h1>
+
+
+
+<nav>
+
+<a href="index.html">
+    🦆 Duck Bet
+</a>
+
+
+<a href="history.html">
+📜 Competition History
+</a>
+
+
+<a href="stat.html">
+📊 Stat
+</a>
+
+
+</nav>
+
+
+
+<div class="card">
+
+
+<h2>
+📜 Past competitions
+</h2>
+
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>Date</th>
+
+<th>Rank 1</th>
+
+<th>Rank 2</th>
+
+<th>Rank 3</th>
+
+<th>Rank 4</th>
+
+</tr>
+
+</thead>
+
+
+
+<tbody id="historyTable">
+
+
+<tr>
+
+<td colspan="5">
+
+</td>
+
+</tr>
+
+
+</tbody>
+
+
+</table>
+
+
+
+</div>
+
+
+</div>
+
+
+
+<script type="module" src="./history.js"></script>
+
+
+</body>
+
+</html>
