@@ -498,6 +498,7 @@ function refreshSummary(){
 
     table.innerHTML="";
 
+
     if(players.length===0){
 
         table.innerHTML=`
@@ -518,60 +519,78 @@ function refreshSummary(){
 
     }
 
+
     players.forEach(player=>{
 
 
         let playerBets = bets.filter(
             b=>b.player===player
         );
-    
-    
+
+
         // ไม่มีเดิมพัน ไม่ต้องแสดง
         if(playerBets.length===0){
-    
+
             return;
-    
+
         }
-    
-    
-        let totalBet=0;
-    
-        let totalReward=0;
-    
-    
-    
+
+
+        let totalBet = 0;
+
+        let totalGet = 0;
+
+
+
         playerBets.forEach(b=>{
-    
+
+
+            // เงินที่ลงทั้งหมด
             totalBet += b.amount;
-    
-            totalReward += b.reward;
-    
+
+
+
+            // ถ้าถูก ได้ reward
+            if(b.win){
+
+                totalGet += b.reward;
+
+            }
+
+            // ถ้าผิด เสียค่าลง
+            else{
+
+                totalGet -= b.amount;
+
+            }
+
+
         });
-    
-    
-    
+
+
+
         table.innerHTML += `
-    
+
         <tr>
-    
+
             <td>${player}</td>
-    
-    
+
+
             <td>${totalBet}</td>
-    
-    
-            <td style="color:${totalReward>0?'lime':'white'}">
-    
-                ${totalReward}
-    
+
+
+            <td style="color:${totalGet>0?'lime':'white'}">
+
+                ${totalGet}
+
             </td>
-    
-    
+
+
         </tr>
-    
+
         `;
-    
-    
+
+
     });
 
 }

@@ -97,13 +97,13 @@ import {
     
     
                 players[b.player]={
-    
+
                     total:0,
                     win:0,
                     lose:0,
                     bet:0,
-                    reward:0
-    
+                    get:0
+                
                 };
     
     
@@ -117,8 +117,18 @@ import {
             p.total++;
     
             p.bet += b.amount;
-    
-            p.reward += b.reward;
+
+
+            if(b.win){
+
+                p.get += b.reward;
+
+            }
+            else{
+
+                p.get -= b.amount;
+
+            }
     
     
     
@@ -174,7 +184,7 @@ import {
     let p=players[name];
     
     
-    let profit=p.reward-p.bet;
+    let profit=p.get;
     
     
     
@@ -192,7 +202,7 @@ import {
     
     <td>${p.bet}</td>
     
-    <td>${p.reward}</td>
+    <td>${p.get}</td>
     
     <td>
     ${profit}
