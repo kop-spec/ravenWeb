@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Guild Diamond</title>
+
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',Arial,sans-serif;
+}
+
+
+body{
+
+background:
+linear-gradient(
+    rgba(0,0,0,0.65),
+    rgba(0,0,0,0.65)
+),
+url("image/duck.png");
+
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+background-attachment:fixed;
+
+color:white;
+
+padding:30px;
+
+min-height:100vh;
+
+}
+
+
+
+.container{
+
+max-width:1200px;
+
+margin:auto;
+
+}
+
+
+
+h1{
+
+text-align:center;
+
+font-size:42px;
+
+margin-bottom:25px;
+
+text-shadow:
+0 0 15px #2196f3;
+
+}
+
+
+
+
+nav{
+
+display:flex;
+
+justify-content:center;
+
+gap:15px;
+
+margin-bottom:30px;
+
+}
+
+
+
+nav a{
+
+color:white;
+
+text-decoration:none;
+
+background:
+rgba(255,255,255,0.08);
+
+border:
+1px solid rgba(255,255,255,.2);
+
+padding:12px 25px;
+
+border-radius:12px;
+
+transition:.3s;
+
+backdrop-filter:blur(10px);
+
+}
+
+
+
+nav a:hover{
+
+background:#2196f3;
+
+transform:translateY(-3px);
+
+}
+
+
+
+
+.card{
+
+background:
+rgba(45,45,45,.75);
+
+border:
+1px solid rgba(255,255,255,.1);
+
+border-radius:18px;
+
+padding:25px;
+
+margin-bottom:25px;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,.4);
+
+backdrop-filter:blur(15px);
+
+}
+
+
+
+.card h2{
+
+margin-bottom:20px;
+
+color:#90caf9;
+
+}
+
+
+
+
+
+input,
+select{
+
+
+background:#171717;
+
+color:white;
+
+border:
+
+1px solid #555;
+
+
+padding:12px 15px;
+
+
+font-size:15px;
+
+
+border-radius:12px;
+
+
+outline:none;
+
+
+}
+
+
+
+input:focus,
+select:focus{
+
+
+border-color:#2196f3;
+
+
+box-shadow:
+
+0 0 10px rgba(33,150,243,.5);
+
+
+}
+
+
+
+
+button{
+
+background:
+
+linear-gradient(
+135deg,
+#2196f3,
+#1565c0
+);
+
+
+color:white;
+
+border:none;
+
+padding:
+
+12px 25px;
+
+
+border-radius:12px;
+
+
+font-size:15px;
+
+
+font-weight:bold;
+
+
+cursor:pointer;
+
+
+transition:.25s;
+
+
+}
+
+.deleteBtn{
+
+background:
+linear-gradient(
+135deg,
+#ff5252,
+#b71c1c
+);
+
+}
+
+
+button:hover{
+
+transform:
+translateY(-3px);
+
+box-shadow:
+
+0 10px 25px rgba(33,150,243,.6);
+
+}
+
+
+
+
+.row{
+
+display:flex;
+
+gap:15px;
+
+flex-wrap:wrap;
+
+align-items:center;
+
+}
+
+
+
+
+.resultBox{
+
+font-size:22px;
+
+line-height:2;
+
+}
+
+
+
+
+table{
+
+width:100%;
+
+border-collapse:collapse;
+
+overflow:hidden;
+
+border-radius:12px;
+
+}
+
+
+
+th{
+
+background:
+
+linear-gradient(
+135deg,
+#333,
+#555
+);
+
+
+padding:14px;
+
+}
+
+
+
+td{
+
+padding:14px;
+
+border-bottom:
+
+1px solid rgba(255,255,255,.1);
+
+}
+
+
+
+tbody tr:hover{
+
+background:
+
+rgba(33,150,243,.15);
+
+}
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+
+<h1>
+💎 Guild Diamond
+</h1>
+
+
+
+
+<nav>
+
+<a href="index.html">
+🦆 DuckBet
+</a>
+
+<a href="history.html">
+📜 History
+</a>
+
+
+<a href="stat.html">
+📊 Stat
+</a>
+
+<a href="guild.html">
+    💎 Guild Diamond
+</a>
+
+
+</nav>
+
+
+
+
+
+<!-- ตั้งค่ากองกลาง -->
+
+
+<div class="card">
+
+
+<h2>
+⚙️ ตั้งค่ากองกลาง
+</h2>
+
+
+
+<div class="row">
+
+
+<input
+id="poolDiamond"
+type="number"
+placeholder="เพชรกองกลาง"
+>
+
+
+
+<input
+id="memberCount"
+type="number"
+placeholder="จำนวนคนแจก"
+>
+
+
+
+<button id="calculatePool">
+
+Calculate
+
+</button>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- ผลการแจก -->
+
+
+<div class="card">
+
+
+<h2>
+📊 ผลการแจก
+</h2>
+
+
+
+<div
+id="poolResult"
+class="resultBox"
+>
+
+ยังไม่มีข้อมูล
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- เลือกรอบแข่ง -->
+
+
+<div class="card">
+
+
+<h2>
+🏁 เลือกรอบการแข่งขัน
+</h2>
+
+
+
+<div class="row">
+
+
+<select id="raceSelect">
+
+
+</select>
+
+
+
+<button id="loadRace">
+
+Load Result
+
+</button>
+
+
+</div>
+
+
+</div>
+<!-- ผลคนเล่น -->
+
+
+<div class="card">
+
+
+<h2>
+💎 Player Diamond Result
+</h2>
+
+
+
+<table>
+
+
+<thead>
+
+
+<tr>
+
+<th>
+Player
+</th>
+
+
+<th>
+Bet
+</th>
+
+
+<th>
+Get
+</th>
+
+
+<th>
+Win
+</th>
+
+
+<th>
+Lose
+</th>
+
+
+<th>Final</th>
+
+
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody id="guildTable">
+
+
+<tr>
+
+<td colspan="6">
+
+ยังไม่มีข้อมูล
+
+</td>
+
+
+</tr>
+
+
+</tbody>
+
+
+
+</table>
+
+
+</div>
+
+<div class="card">
+
+    <h2>
+    🏦 Dealer Result
+    </h2>
+    
+    
+    <div
+    id="dealerResult"
+    class="resultBox"
+    >
+    
+    ยังไม่มีข้อมูล
+    
+    </div>
+    
+    
+    </div>  
+<!-- ประวัติกองกลาง -->
+
+
+<div class="card">
+
+
+    <h2>
+    📜 ประวัติกองกลาง
+    </h2>
+    
+    
+    
+    <table>
+    
+    
+    <thead>
+    
+    <tr>
+    
+    <th>
+    Race
+    </th>
+    
+    <th>
+    Pool
+    </th>
+    
+    
+    <th>
+    Members
+    </th>
+    
+    
+    <th>
+    Per Person
+    </th>
+    
+    
+    <th>
+    Dealer Change
+    </th>
+    
+    
+    <th>
+    Status
+    </th>
+    
+    
+    <th>
+    Dealer Final
+    </th>
+    
+    
+    <th>
+    Date
+    </th>
+
+    <th>
+    Manage
+    </th>
+    
+    
+    </tr>
+    
+    
+    </thead>
+    
+    
+    
+    <tbody id="rewardTable">
+    
+    
+    <tr>
+    
+    <td colspan="8">
+    
+    ยังไม่มีข้อมูล
+    
+    </td>
+    
+    
+    </tr>
+    
+    
+    </tbody>
+    
+    
+    
+    </table>
+    
+    
+    
+    </div>
+
+
+
+
+<script type="module" src="guild.js"></script>
+
+
+
+</body>
+
+</html>

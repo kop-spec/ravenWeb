@@ -4,7 +4,11 @@ import {
     getFirestore,
     collection,
     addDoc,
-    getDocs
+    getDocs,
+    query,
+    orderBy,
+    deleteDoc,
+    doc
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
@@ -18,10 +22,16 @@ const firebaseConfig = {
 };
 
 
-const app = initializeApp(firebaseConfig);
+
+const app =
+initializeApp(firebaseConfig);
 
 
-const db = getFirestore(app);
+
+const db =
+getFirestore(app);
+
+
 
 
 async function testFirebase(){
@@ -36,7 +46,12 @@ async function testFirebase(){
             }
         );
 
-        console.log("บันทึกสำเร็จ :",docRef.id);
+
+        console.log(
+            "บันทึกสำเร็จ :",
+            docRef.id
+        );
+
 
     }
     catch(err){
@@ -48,10 +63,18 @@ async function testFirebase(){
 }
 
 
+
+
 export {
+
     db,
     testFirebase,
     collection,
     addDoc,
-    getDocs
+    getDocs,
+    query,
+    orderBy,
+    deleteDoc,
+    doc
+
 };

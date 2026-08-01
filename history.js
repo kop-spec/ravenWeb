@@ -2,7 +2,9 @@ import {
 
     db,
     collection,
-    getDocs
+    getDocs,
+    deleteDoc,
+    doc
 
 } from "./firebase.js";
 
@@ -25,13 +27,11 @@ async function loadHistory(){
 
     snapshot.forEach(doc=>{
 
+        const id = doc.id;
 
         const data = doc.data();
 
-
         const result=data.result;
-
-
 
         table.innerHTML += `
 
@@ -60,6 +60,25 @@ async function loadHistory(){
             <td>
                 ${result.fourth}
             </td>
+            <td>
+
+                <button 
+                onclick="deleteHistory('${id}')"
+                style="
+                background:#d32f2f;
+                padding:8px 15px;
+                border-radius:8px;
+                color:white;
+                border:none;
+                cursor:pointer;
+                ">
+
+                Delete
+
+                </button>
+
+
+                </td>
 
 
         </tr>
@@ -103,6 +122,42 @@ function formatDate(timestamp){
 
 }
 
+window.deleteHistory = async function(id){
+
+
+    if(!confirm("ต้องการลบประวัตินี้ไหม?"))
+        return;
+
+
+
+    try{
+
+
+        await deleteDoc(
+            doc(db,"races",id)
+        );
+
+
+        alert("ลบเรียบร้อย");
+
+
+        loadHistory();
+
+
+    }
+    catch(error){
+
+
+        console.error(
+            "Delete error:",
+            error
+        );
+
+
+    }
+
+
+}
 
 
 loadHistory();

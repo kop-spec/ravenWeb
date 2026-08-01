@@ -7,7 +7,9 @@ import {
     testFirebase,
     collection,
     addDoc,
-    getDocs
+    getDocs,
+    deleteDoc,
+    doc
 } from "./firebase.js";
 console.log(db);
 testFirebase();
@@ -27,14 +29,19 @@ async function loadPlayers(){
 
     querySnapshot.forEach((doc)=>{
 
-        players.push(
-            doc.data().name
-        );
+        players.push({
+
+            id:doc.id,
+        
+            name:doc.data().name
+        
+        });
 
     });
 
 
     refreshPlayerSelect();
+    refreshPlayerTable();
 
 
     console.log("โหลดผู้เล่น:",players);
@@ -80,7 +87,11 @@ async function addPlayer(){
     );
     
     
-    players.push(name);
+    players.push({
+
+        name:name
+    
+    });
     
     input.value="";
     
@@ -111,14 +122,19 @@ function refreshPlayerSelect(){
 
         players.forEach(player=>{
 
+
             let option=document.createElement("option");
-
-            option.value=player;
-
-            option.textContent=player;
-
+        
+        
+            option.value=player.name;
+        
+        
+            option.textContent=player.name;
+        
+        
             select.appendChild(option);
-
+        
+        
         });
 
     });
@@ -602,19 +618,16 @@ async function saveHistory(result){
 
 
         await addDoc(
-
             collection(db,"races"),
-
             {
-
                 result:result,
-
+        
                 bets:bets,
-
+        
+                status:"finished",
+        
                 date:new Date()
-
             }
-
         );
 
 
@@ -628,6 +641,113 @@ async function saveHistory(result){
             "บันทึกไม่สำเร็จ",
             err
         );
+
+    }
+
+
+}
+
+function refreshPlayerTable(){
+
+
+    let table =
+    document.getElementById(
+        "playerTable"
+    );
+
+
+    if(!table)
+        return;
+
+
+    table.innerHTML="";
+
+
+
+    players.forEach(player=>{
+
+
+        table.innerHTML += `
+
+        <tr>
+
+        <td>
+        ${player.name}
+        </td>
+
+
+        <td>
+
+
+        <button
+        onclick="deletePlayer('${player.id}')">
+
+        🗑️ Delete
+
+        </button>
+
+
+        </td>
+
+
+        </tr>
+
+
+        `;
+
+
+    });
+
+
+}
+
+window.deletePlayer = async function(id){
+
+
+    if(!confirm(
+        "ต้องการลบ Player นี้ไหม?"
+    ))
+    return;
+
+
+
+    await deleteDoc(
+
+        doc(
+            db,
+            "players",
+            id
+        )
+
+    );
+
+
+    alert(
+        "ลบ Player แล้ว"
+    );
+
+
+    loadPlayers();
+
+}
+
+window.togglePlayerManage = function(){
+
+
+    let box =
+    document.getElementById(
+        "playerManageBox"
+    );
+
+
+    if(box.style.display==="none"){
+
+        box.style.display="block";
+
+    }
+    else{
+
+        box.style.display="none";
 
     }
 
