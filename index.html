@@ -654,39 +654,55 @@ Add
 
 <div class="card">
 
-<h2>📋 Lists</h2>
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:20px;
+    ">
 
-<table>
+        <h2 style="margin:0;">
+            📋 Lists
+        </h2>
 
-<thead>
+        <button
+            onclick="clearCurrentRound()"
+            style="
+                padding:8px 16px;
+                font-size:13px;
+                background:linear-gradient(
+                    135deg,
+                    #ff9800,
+                    #e65100
+                );
+                box-shadow:none;
+            "
+        >
+            🧹 Clear Round
+        </button>
 
-<tr>
+    </div>
 
-    <th>Player</th>
-    <th>Type</th>
-    <th>Record</th>
-    <th>Bet</th>
-    <th>Result</th>
-    <th>Manage</th>
+    <table>
 
-</tr>
+        <thead>
 
-</thead>
+            <tr>
+                <th>Player</th>
+                <th>Type</th>
+                <th>Record</th>
+                <th>Bet</th>
+                <th>Result</th>
+                <th>Manage</th>
+            </tr>
 
-<tbody id="betTable">
+        </thead>
 
-<tr>
+        <tbody id="betTable">
 
-<td colspan="6">
+        </tbody>
 
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
+    </table>
 
 </div>
 
@@ -756,34 +772,52 @@ Calculate
 
 <div class="card">
 
-<h2>💰 Result</h2>
+    <h2 style="display:flex; align-items:center; gap:12px;">
 
-<table>
+        💰 Result
 
-<thead>
+        <select id="raceSelect"
+            style="
+                width:120px;
+                padding:6px 10px;
+                font-size:13px;
+                border-radius:8px;
+            ">
 
-<tr>
+            <option value="">
+                Race
+            </option>
 
-    <th>Player</th>
-    <th>Bet</th>
-    <th>Get</th>
+        </select>
 
-</tr>
+    </h2>
 
-</thead>
 
-<tbody id="summaryTable">
+    <table>
 
-<tr>
+        <thead>
 
-    <td colspan="3">
-        </td>
+            <tr>
+                <th>Player</th>
+                <th>Bet</th>
+                <th>Get</th>
+            </tr>
 
-</tr>
+        </thead>
 
-</tbody>
+        <tbody id="summaryTable">
 
-</table>
+            <tr>
+
+                <td colspan="3">
+                    เลือก Race
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
 
 </div>
 

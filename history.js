@@ -35,56 +35,54 @@ async function loadHistory(){
 
         table.innerHTML += `
 
-        <tr>
+<tr>
 
-            <td>
-                ${formatDate(data.date)}
-            </td>
+    <td>
+        Race #${data.raceNumber ?? "?"}
+    </td>
 
+    <td>
+        ${formatDate(data.date)}
+    </td>
 
-            <td class="result">
-                🥇 ${result.first}
-            </td>
+    <td class="result">
+        🥇 ${result.first}
+    </td>
 
+    <td>
+        🥈 ${result.second}
+    </td>
 
-            <td>
-                🥈 ${result.second}
-            </td>
+    <td>
+        🥉 ${result.third}
+    </td>
 
+    <td>
+        ${result.fourth}
+    </td>
 
-            <td>
-                🥉 ${result.third}
-            </td>
+    <td>
 
+        <button 
+        onclick="deleteHistory('${id}')"
+        style="
+        background:#d32f2f;
+        padding:8px 15px;
+        border-radius:8px;
+        color:white;
+        border:none;
+        cursor:pointer;
+        ">
 
-            <td>
-                ${result.fourth}
-            </td>
-            <td>
+        Delete
 
-                <button 
-                onclick="deleteHistory('${id}')"
-                style="
-                background:#d32f2f;
-                padding:8px 15px;
-                border-radius:8px;
-                color:white;
-                border:none;
-                cursor:pointer;
-                ">
+        </button>
 
-                Delete
+    </td>
 
-                </button>
+</tr>
 
-
-                </td>
-
-
-        </tr>
-
-
-        `;
+`;
 
 
     });

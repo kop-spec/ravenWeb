@@ -2,7 +2,7 @@
 // Horse Bet
 // Part 2.1
 // =========================
-import { 
+import {
     db,
     testFirebase,
     collection,
@@ -16,6 +16,13 @@ testFirebase();
 
 let players = [];
 let bets = [];
+
+// โหลดโพยที่ค้างไว้
+const savedBets = localStorage.getItem("duckbet_bets");
+
+if(savedBets){
+    bets = JSON.parse(savedBets);
+}
 
 async function loadPlayers(){
 
@@ -42,6 +49,7 @@ async function loadPlayers(){
 
     refreshPlayerSelect();
     refreshPlayerTable();
+    loadSelectedValues();
 
 
     console.log("โหลดผู้เล่น:",players);
@@ -96,6 +104,7 @@ async function addPlayer(){
     input.value="";
     
     refreshPlayerSelect();
+    loadSelectedValues();
 }
 
 //----------------------------
@@ -188,6 +197,11 @@ function addWinBet(){
 //----------------------------
 
 function refreshTable(){
+
+    localStorage.setItem(
+        "duckbet_bets",
+        JSON.stringify(bets)
+    );
 
     let table=document.getElementById("betTable");
 
@@ -510,102 +524,67 @@ function checkWinner(result){
 
 function refreshSummary(){
 
-    const table=document.getElementById("summaryTable");
+    const table = document.getElementById("summaryTable");
 
-    table.innerHTML="";
+    table.innerHTML = "";
 
+    if(players.length === 0){
 
-    if(players.length===0){
-
-        table.innerHTML=`
-
+        table.innerHTML = `
         <tr>
-
             <td colspan="3">
-
                 ไม่มีผู้เล่น
-
             </td>
-
         </tr>
-
         `;
 
         return;
-
     }
 
-
-    players.forEach(player=>{
-
+    players.forEach(player => {
 
         let playerBets = bets.filter(
-            b=>b.player===player
+            b => b.player === player.name
         );
 
-
         // ไม่มีเดิมพัน ไม่ต้องแสดง
-        if(playerBets.length===0){
-
+        if(playerBets.length === 0){
             return;
-
         }
 
-
         let totalBet = 0;
-
         let totalGet = 0;
 
+        playerBets.forEach(b => {
 
-
-        playerBets.forEach(b=>{
-
-
-            // เงินที่ลงทั้งหมด
             totalBet += b.amount;
 
-
-
-            // ถ้าถูก ได้ reward
             if(b.win){
-
                 totalGet += b.reward;
-
             }
-
-            // ถ้าผิด เสียค่าลง
             else{
-
                 totalGet -= b.amount;
-
             }
-
 
         });
 
-
-
         table.innerHTML += `
-
         <tr>
 
-            <td>${player}</td>
-
-
-            <td>${totalBet}</td>
-
-
-            <td style="color:${totalGet>0?'lime':'white'}">
-
-                ${totalGet}
-
+            <td>
+                ${player.name}
             </td>
 
+            <td>
+                ${totalBet}
+            </td>
+
+            <td style="color:${totalGet > 0 ? 'lime' : 'white'}">
+                ${totalGet}
+            </td>
 
         </tr>
-
         `;
-
 
     });
 
@@ -613,26 +592,28 @@ function refreshSummary(){
 
 async function saveHistory(result){
 
-
     try{
 
+        const snapshot = await getDocs(
+            collection(db, "races")
+        );
+
+        const raceNumber = snapshot.size + 1;
 
         await addDoc(
-            collection(db,"races"),
+            collection(db, "races"),
             {
-                result:result,
-        
-                bets:bets,
-        
-                status:"finished",
-        
-                date:new Date()
+                raceNumber: raceNumber,
+                result: result,
+                bets: bets,
+                status: "finished",
+                date: new Date()
             }
         );
 
-
-        console.log("บันทึกประวัติการแข่งขันแล้ว");
-
+        console.log(
+            "บันทึก Race #" + raceNumber
+        );
 
     }
     catch(err){
@@ -643,7 +624,6 @@ async function saveHistory(result){
         );
 
     }
-
 
 }
 
@@ -754,5 +734,369 @@ window.togglePlayerManage = function(){
 
 }
 
-loadPlayers();
+// =========================
+// Result Race Dropdown
+// =========================
 
+const raceSelect = document.getElementById("raceSelect");
+
+raceSelect.addEventListener("change", async function(){
+
+    const raceId = this.value;
+
+    const table = document.getElementById("summaryTable");
+
+    table.innerHTML = "";
+
+    if(!raceId){
+
+        table.innerHTML = `
+        <tr>
+            <td colspan="3">
+                เลือก Race
+            </td>
+        </tr>
+        `;
+
+        return;
+    }
+
+    try{
+
+        const snapshot = await getDocs(
+            collection(db,"races")
+        );
+
+        let selectedRace = null;
+
+        snapshot.forEach(doc => {
+
+            if(doc.id === raceId){
+
+                selectedRace = doc.data();
+
+            }
+
+        });
+
+
+        if(!selectedRace){
+
+            table.innerHTML = `
+            <tr>
+                <td colspan="3">
+                    ไม่พบข้อมูล Race
+                </td>
+            </tr>
+            `;
+
+            return;
+        }
+
+
+        // =========================
+        // คำนวณผลของแต่ละคน
+        // =========================
+
+        let playersResult = {};
+
+
+        selectedRace.bets.forEach(b => {
+
+            if(!playersResult[b.player]){
+
+                playersResult[b.player] = {
+                    bet: 0,
+                    get: 0
+                };
+
+            }
+
+
+            playersResult[b.player].bet += b.amount;
+
+
+            if(b.win){
+
+                playersResult[b.player].get += b.reward;
+
+            }
+            else{
+
+                playersResult[b.player].get -= b.amount;
+
+            }
+
+        });
+
+
+        // =========================
+        // แสดงผล
+        // =========================
+
+        Object.entries(playersResult).forEach(
+            ([player,data]) => {
+
+                table.innerHTML += `
+
+                <tr>
+
+                    <td>
+                        ${player}
+                    </td>
+
+                    <td>
+                        ${data.bet}
+                    </td>
+
+                    <td style="
+                        color:${
+                            data.get > 0
+                            ? 'lime'
+                            : data.get < 0
+                            ? '#ff5252'
+                            : 'white'
+                        };
+                        font-weight:bold;
+                    ">
+                        ${data.get}
+                    </td>
+
+                </tr>
+
+                `;
+
+            }
+        );
+
+
+    }
+    catch(error){
+
+        console.error(error);
+
+    }
+
+});
+
+
+// =========================
+// โหลด Race จาก Firebase
+// =========================
+
+async function loadRaceDropdown(){
+
+    const select = document.getElementById("raceSelect");
+
+    select.innerHTML = `
+        <option value="">
+            เลือก Race
+        </option>
+    `;
+
+
+    try{
+
+        const snapshot = await getDocs(
+            collection(db,"races")
+        );
+
+
+        let races = [];
+
+
+        snapshot.forEach(doc => {
+
+            races.push({
+
+                id: doc.id,
+
+                data: doc.data()
+
+            });
+
+        });
+
+
+        // Race ล่าสุดก่อน
+        races.forEach(race => {
+
+            const option =
+                document.createElement("option");
+        
+            option.value = race.id;
+        
+            option.textContent =
+                `Race #${race.data.raceNumber}`;
+        
+            select.appendChild(option);
+        
+        });
+
+
+    }
+    catch(error){
+
+        console.error(
+            "โหลด Race ไม่สำเร็จ",
+            error
+        );
+
+    }
+
+}
+
+// =========================
+// จำค่าที่เลือกหลัง Refresh
+// =========================
+
+const selectIds = [
+    "winPlayer",
+    "winHorse",
+    "lastPlayer",
+    "tailHorse",
+    "stepPlayer",
+    "step1",
+    "step2",
+    "step3",
+    "step4",
+    "result1",
+    "result2",
+    "result3",
+    "result4"
+];
+
+
+// โหลดค่าที่เคยเลือก
+function loadSelectedValues(){
+
+    selectIds.forEach(id => {
+
+        const select = document.getElementById(id);
+
+        if(!select){
+            return;
+        }
+
+        const savedValue =
+            localStorage.getItem("duckbet_" + id);
+
+        if(savedValue !== null){
+
+            // ตรวจว่าค่านี้ยังมีอยู่ใน option หรือไม่
+            const optionExists =
+                [...select.options]
+                .some(option => option.value === savedValue);
+
+            if(optionExists){
+
+                select.value = savedValue;
+
+            }
+
+        }
+
+    });
+
+}
+
+
+// บันทึกทุกครั้งที่เปลี่ยน
+selectIds.forEach(id => {
+
+    const select = document.getElementById(id);
+
+    if(!select){
+        return;
+    }
+
+    select.addEventListener("change", function(){
+
+        localStorage.setItem(
+            "duckbet_" + id,
+            this.value
+        );
+
+    });
+
+});
+
+window.clearCurrentRound = function(){
+
+    if(!confirm("ต้องการล้างโพยและตัวเลือกทั้งหมดของรอบนี้ไหม?")){
+        return;
+    }
+
+    // ล้างโพย
+    bets = [];
+
+    localStorage.removeItem("duckbet_bets");
+
+    // ล้างค่าที่เลือก
+    selectIds.forEach(id => {
+        localStorage.removeItem("duckbet_" + id);
+    });
+
+    // ล้างตาราง Lists
+    refreshTable();
+
+    // คืนค่า dropdown เป็นค่าแรก
+    loadSelectedValues();
+
+    alert("ล้างรอบปัจจุบันแล้ว");
+
+};
+
+async function fixOldRaceNumbers(){
+
+    const snapshot = await getDocs(
+        collection(db, "races")
+    );
+
+    let races = [];
+
+    snapshot.forEach(raceDoc => {
+
+        races.push({
+            id: raceDoc.id,
+            data: raceDoc.data()
+        });
+
+    });
+
+    // เรียงจากเก่า → ใหม่
+    races.sort((a, b) => {
+
+        const dateA = a.data.date?.toDate
+            ? a.data.date.toDate()
+            : new Date(a.data.date);
+
+        const dateB = b.data.date?.toDate
+            ? b.data.date.toDate()
+            : new Date(b.data.date);
+
+        return dateA - dateB;
+
+    });
+
+    // ใส่เลข Race ให้ของเก่า
+    for(let i = 0; i < races.length; i++){
+
+        const raceNumber = i + 1;
+
+        await updateDoc(
+            doc(db, "races", races[i].id),
+            {
+                raceNumber: raceNumber
+            }
+        );
+
+    }
+
+    console.log("จัดเลข Race เก่าเรียบร้อย");
+
+}
+
+loadPlayers();
+refreshTable();
+loadRaceDropdown();
